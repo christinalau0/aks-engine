@@ -206,6 +206,9 @@ func (cs *ContainerService) setOrchestratorDefaults(isUpgrade, isScale bool) {
 		}
 		if o.KubernetesConfig.ContainerRuntime == "" {
 			o.KubernetesConfig.ContainerRuntime = DefaultContainerRuntime
+			if common.IsKubernetesVersionGe(o.OrchestratorVersion, "1.24.0") {
+				o.KubernetesConfig.ContainerRuntime = Containerd
+			}
 		}
 		switch o.KubernetesConfig.ContainerRuntime {
 		case Docker:

@@ -1469,6 +1469,9 @@ func (k *KubernetesConfig) Validate(k8sVersion string, hasWindows, ipv6DualStack
 			return errors.Errorf("containerdVersion is only valid in a non-docker context, use %s containerRuntime value instead if you wish to provide a containerdVersion", Containerd)
 		}
 	}
+	if k.ContainerRuntime == Docker && common.IsKubernetesVersionGe(k8sVersion, "1.24.0") {
+		return errors.Errorf("Docker runtime is no longer supported for v1.24+ clusters, use %s containerRuntime value instead", Containerd)
+	}
 	if e := validateContainerdVersion(k.ContainerdVersion); e != nil {
 		return e
 	}

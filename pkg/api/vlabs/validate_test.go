@@ -712,6 +712,16 @@ func Test_KubernetesConfig_Validate(t *testing.T) {
 			t.Errorf("should error when setting tags before v1.20.0")
 		}
 	}
+
+	// Tests that apply to 1.24 and later releases
+	for _, k8sVersion := range common.GetVersionsGt(common.GetAllSupportedKubernetesVersions(true, false, false), "1.24.0", true, true) {
+		c := KubernetesConfig{
+			ContainerRuntime: Docker,
+		}
+		if err := c.Validate(k8sVersion, false, false, false, false); err != nil {
+			t.Errorf("Docker runtime is no longer supported for v1.24+ clusters, use %s containerRuntime value instead", Containerd)
+		}
+	}
 }
 
 func Test_Properties_ValidateCustomKubeComponent(t *testing.T) {
