@@ -307,6 +307,7 @@ if [ "${UPGRADE_CLUSTER}" = "true" ] || [ "${SCALE_CLUSTER}" = "true" ] || [ -n 
     git checkout -b $UPGRADE_FORK/$UPGRADE_BRANCH --track $UPGRADE_FORK/$UPGRADE_BRANCH
     git pull
     git log -1
+    WORK_DIR="/aks-engine-azurestack"
     docker run --rm \
       -v $(pwd):${WORK_DIR} \
       -w ${WORK_DIR} \
@@ -606,7 +607,7 @@ if [ "${UPGRADE_CLUSTER}" = "true" ]; then
       -e RESOURCE_GROUP=$RESOURCE_GROUP \
       -e REGION=$REGION \
       ${DEV_IMAGE} \
-      ./bin/aks-engine upgrade --force \
+      ./bin/aks-engine-azurestack upgrade --force \
       --azure-env ${AZURE_ENV} \
       --subscription-id ${AZURE_SUBSCRIPTION_ID} \
       --api-model _output/$RESOURCE_GROUP/apimodel.json \
